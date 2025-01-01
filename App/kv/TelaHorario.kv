@@ -1,0 +1,47 @@
+<TelaHorario>:
+    dias_input: dias_input
+    horas_input: horas_input
+    resultado_label: resultado_label
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Calculadora de Carga Horária"
+            font_size: 24
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Label:
+                text: "Dias:"
+                size_hint_x: 0.4
+
+            TextInput:
+                id: dias_input
+                hint_text: "Ex: 5"
+                input_filter: "int"
+
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Label:
+                text: "Horas por Dia:"
+                size_hint_x: 0.4
+
+            TextInput:
+                id: horas_input
+                hint_text: "Ex: 8"
+                input_filter: "int"
+
+        Button:
+            text: "Calcular Carga Horária"
+            size_hint: (1, 0.3)
+            on_press: root.calcular_carga_horaria()
+
+        Label:
+            id: resultado_label
+            text: "Carga Horária: "
+            font_size: 18
