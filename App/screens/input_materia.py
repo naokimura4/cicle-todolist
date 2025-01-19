@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 
-class InputScreen(Screen):
+class InputMateria(Screen):
     nome_materia = ObjectProperty(None)
     spinner_diff = ObjectProperty(None)
 

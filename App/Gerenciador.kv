@@ -1,0 +1,204 @@
+<Gerenciador>:
+    Menu:
+        name: 'menu'
+    InputMateria: 
+        name: 'materia'
+    TelaHorario:
+        name: 'horario'
+    Ciclo:
+        name: 'ciclo'
+
+<Menu>:
+    
+    BoxLayout:    
+        orientation: 'vertical'
+        spacing: 10
+        padding: 20
+        Label: 
+            text: "Ciclo de Estudos"
+            font_size: 60
+        Button:
+            text: "Adicionar Matéria"
+            font_size: 25
+            on_release: app.root.current = 'materia'  # Corrigido
+        Button:
+            text: "Ajustar Horário"
+            font_size: 25
+            on_release: app.root.current = 'horario'  # Corrigido
+        Button: 
+            text: "Ver Ciclo"
+            font_size: 25
+            on_release: app.root.current = 'ciclo'
+            # Adicionar Tela do Ciclo
+        Button:
+            text: "Sair"
+            font_size: 25
+            on_release: app.stop()
+
+<InputMateria>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [20, 20, 20, 20]
+        spacing: 10
+
+        Label:
+            text: "Nome da Matéria:"
+            font_size: 18
+            bold: True
+
+        TextInput:
+            id: nome_materia
+            hint_text: "Digite o nome da matéria"
+
+        Label:
+            text: "Nível de Dificuldade:"
+            bold: True
+            font_size: 18
+
+        Spinner:
+            id: spinner_diff
+            text: "Selecione"
+            values: ["1 - Péssimo", "2 - Ruim", "3 - Mediano", "4 - Bom", "5 - Excelente"]
+
+        BoxLayout: # Ao lado do outro
+            orientation: 'horizontal'
+            spacing: 10
+            size_hint_y: None
+            height: 50
+
+            Button:
+                text: "Salvar"
+                on_release: root.salvar_materia()
+
+            Button:
+                text: "Cancelar"
+                on_release: app.root.current = 'menu'
+
+
+<TelaHorario>:
+    dias_input: dias_input
+    horas_input: horas_input
+    resultado_label: resultado_label
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [20, 30, 20, 30]  # Adiciona padding proporcional (esquerda, topo, direita, base)
+        spacing: 15  # Mais espaçamento entre os elementos
+
+        Label:
+            text: "Calculadora de Carga Horária"
+            font_size: 28
+            bold: True
+            color: [0.2, 0.6, 0.8, 1]  # Cor em formato RGBA (azul claro)
+            size_hint_y: 1
+            height: 50
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            size_hint_y: None
+            height: 40
+
+            Label:
+                text: "Dias:"
+                size_hint_x: 0.4
+                font_size: 18
+
+            TextInput:
+                id: dias_input
+                hint_text: "Ex: 5"
+                input_filter: "int"
+                size_hint_x: 0.6
+                background_color: [1, 1, 1, 1]  # Fundo branco
+                foreground_color: [0, 0, 0, 1]  # Texto preto
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            size_hint_y: None
+            height: 40
+
+            Label:
+                text: "Horas por Dia:"
+                size_hint_x: 0.4
+                font_size: 18
+
+            TextInput:
+                id: horas_input
+                hint_text: "Ex: 8"
+                input_filter: "int"
+                size_hint_x: 0.6
+                background_color: [1, 1, 1, 1]
+                foreground_color: [0, 0, 0, 1]
+
+        Button:
+            text: "Calcular Carga Horária"
+            size_hint: (1, None)
+            font_size: 18
+            bold: True
+            background_color: [0.2, 0.6, 0.8, 1]  # Azul claro
+            color: [1, 1, 1, 1]  # Texto branco
+            on_press: root.calcular_ch()  # Vincula ao método corrigido
+
+        Label:
+            id: resultado_label
+            text: "Carga Horária: "
+            font_size: 20
+            bold: True
+            color: [0, 0.4, 0, 1]  # Verde escuro
+            size_hint_y: None
+            height: 40
+
+        Button:
+            text: "Cancelar"
+            bold: True
+            font_size: 18
+            size_hint: (1, None)
+            background_color: [1, 0.2, 0.2, 1]  # Vermelho claro
+            color: [1, 1, 1, 1]  # Texto branco
+            on_release: app.root.current = 'menu'
+<Ciclo>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Ciclo de Estudos"
+            font_size: 32
+            bold: True
+            size_hint_y: None
+            height: 50
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            bar_width: 10
+            scroll_type: ['bars', 'content']
+
+            GridLayout:
+                id: grid_layout
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 60
+                spacing: 10
+                padding: [10, 10]
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 50
+            spacing: 10
+
+            Button:
+                text: "Adicionar Matemática (Exemplo)"
+                on_release: root.adicionar_materia("Matemática", 3)
+
+            Button:
+                text: "Adicionar Física (Exemplo)"
+                on_release: root.adicionar_materia("Física", 5)
+
+        Button:
+            text: 'Voltar'
+            on_release: app.root.current = 'menu'
