@@ -17,7 +17,7 @@ class MyApp(App):
         Builder.load_file('Gerenciador.kv')
         # Criando o ScreenManager e adicionando a tela do menu
         sm = Gerenciador()
-        sm.current = 'menu'
+        sm.current = 'horario'
         # Retornando o ScreenManager
         return sm
 

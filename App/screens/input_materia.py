@@ -6,12 +6,15 @@ class InputMateria(Screen):
     spinner_diff = ObjectProperty(None)
 
     def salvar_materia(self):
-        # Captura os dados inseridos
         enviar_materia = self.nome_materia.text
         nivel_diff = self.spinner_diff.text
-        # Fazer retorno como Objeto de CheckBox
-        # Verificação simples
+
         if enviar_materia and nivel_diff != "Selecione":
-            print(f"Matéria: {enviar_materia}, Dificuldade: {nivel_diff}")
+            try:
+                dificuldade = int(nivel_diff.split(" - ")[0])
+                self.manager.get_screen('ciclo').adicionar_materia(enviar_materia, dificuldade)
+                self.manager.current = 'ciclo'
+            except ValueError:
+                print("Erro: Dificuldade inválida.")
         else:
             print("Por favor, preencha todos os campos.")

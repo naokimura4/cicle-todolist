@@ -36,44 +36,39 @@
             on_release: app.stop()
 
 <InputMateria>:
+    nome_materia: nome_input
+    spinner_diff: dificuldade_spinner
+
     BoxLayout:
         orientation: 'vertical'
-        padding: [20, 20, 20, 20]
+        padding: 20
         spacing: 10
 
-        Label:
-            text: "Nome da Matéria:"
-            font_size: 18
-            bold: True
-
         TextInput:
-            id: nome_materia
-            hint_text: "Digite o nome da matéria"
-
-        Label:
-            text: "Nível de Dificuldade:"
-            bold: True
-            font_size: 18
-
-        Spinner:
-            id: spinner_diff
-            text: "Selecione"
-            values: ["1 - Péssimo", "2 - Ruim", "3 - Mediano", "4 - Bom", "5 - Excelente"]
-
-        BoxLayout: # Ao lado do outro
-            orientation: 'horizontal'
-            spacing: 10
+            id: nome_input
+            hint_text: "Nome da Matéria"
             size_hint_y: None
             height: 50
 
+        Spinner:
+            id: dificuldade_spinner
+            text: "Selecione"
+            values: ["1 - Péssimo", "2 - Ruim", "3 - Mediano", "4 - Bom", "5 - Excelente"]
+            size_hint_y: None
+            height: 50
+
+        BoxLayout:
             Button:
                 text: "Salvar"
+                size_hint_y: None
+                height: 50
                 on_release: root.salvar_materia()
 
             Button:
                 text: "Cancelar"
+                size_hint_y: None
+                height: 50
                 on_release: app.root.current = 'menu'
-
 
 <TelaHorario>:
     dias_input: dias_input
@@ -163,42 +158,23 @@
         padding: 20
         spacing: 10
 
-        Label:
-            text: "Ciclo de Estudos"
-            font_size: 32
-            bold: True
-            size_hint_y: None
-            height: 50
-
         ScrollView:
-            do_scroll_x: False
-            do_scroll_y: True
-            bar_width: 10
-            scroll_type: ['bars', 'content']
-
             GridLayout:
                 id: grid_layout
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
-                row_default_height: 60
                 spacing: 10
-                padding: [10, 10]
 
         BoxLayout:
-            orientation: 'horizontal'
             size_hint_y: None
             height: 50
             spacing: 10
 
             Button:
-                text: "Adicionar Matemática (Exemplo)"
-                on_release: root.adicionar_materia("Matemática", 3)
+                text: "Adicionar Matéria"
+                on_release: root.manager.current = 'materia'
 
             Button:
-                text: "Adicionar Física (Exemplo)"
-                on_release: root.adicionar_materia("Física", 5)
-
-        Button:
-            text: 'Voltar'
-            on_release: app.root.current = 'menu'
+                text: 'Voltar'
+                on_release: app.root.current = 'menu'
