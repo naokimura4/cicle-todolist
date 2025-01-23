@@ -5,11 +5,49 @@
         name: 'materia'
     TelaHorario:
         name: 'horario'
+    Welcome:
+        name: 'welcome'
     Ciclo:
         name: 'ciclo'
+    TransitionHorario:
+        name: 'transicao'
+
+<Welcome>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+        Label:
+            text: "Bem-vindo ao Ciclo de Estudos"
+            font_size: 50
+
+        Label:
+            text: "Organize seu tempo e estudos de forma eficaz! :)"
+            font_size: 20
+
+        Button:
+            text: "Começar"
+            font_size: 25
+            background_color: (0, 1, 0, 1)
+            on_press: self.background_color = (1, 0, 0, 1)
+            on_release: 
+                self.background_color = (0, 1, 0, 1)
+                app.root.current = 'transicao'
+
+<TransitionHorario>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        Label:
+            text: 'Antes de começar, vamos calcular sua carga horária semanal'
+            font_size: 20
+        Button:
+            text: 'Definir Carga Horária'
+            font_size: 25
+            on_release: app.root.current = 'horario'
+        
 
 <Menu>:
-    
     BoxLayout:    
         orientation: 'vertical'
         spacing: 10
@@ -94,14 +132,14 @@
             size_hint_y: None
             height: 40
 
-            Label:
-                text: "Dias:"
-                size_hint_x: 0.4
-                font_size: 18
+            # Label:
+            #     text: "Dias:"
+            #     size_hint_x: 0.4
+            #     font_size: 18
 
             TextInput:
                 id: dias_input
-                hint_text: "Ex: 5"
+                hint_text: "Dias"
                 input_filter: "int"
                 size_hint_x: 0.6
                 background_color: [1, 1, 1, 1]  # Fundo branco
@@ -113,14 +151,14 @@
             size_hint_y: None
             height: 40
 
-            Label:
-                text: "Horas por Dia:"
-                size_hint_x: 0.4
-                font_size: 18
+            # Label:
+            #     text: "Horas por Dia:"
+            #     size_hint_x: 0.4
+            #     font_size: 18
 
             TextInput:
                 id: horas_input
-                hint_text: "Ex: 8"
+                hint_text: "Horas por Dia"
                 input_filter: "int"
                 size_hint_x: 0.6
                 background_color: [1, 1, 1, 1]

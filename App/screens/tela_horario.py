@@ -8,9 +8,12 @@ class TelaHorario(Screen):
     
     def calcular_ch(self):
         try:
-            dia = int(self.dias_input.text)  # Corrigido para usar self
-            horas_minimas = int(self.horas_input.text)  # Corrigido para usar self
+            dia = int(self.dias_input.text)
+            horas_minimas = int(self.horas_input.text)
             carga_horaria = dia * horas_minimas
             self.resultado_label.text = f'Carga Horária: {carga_horaria} horas'
+            
+            # Armazena a carga horária no ScreenManager
+            self.manager.carga_horaria = carga_horaria
         except ValueError:
-            self.resultado_label.text = f'Por favor, insira valores válidos.' 
+            self.resultado_label.text = 'Por favor, insira valores válidos.'
