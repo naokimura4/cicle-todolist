@@ -24,11 +24,13 @@ class InputMateria(Screen):
             try:
                 dificuldade = int(nivel_diff.split(" - ")[0])
                 self.manager.get_screen('ciclo').adicionar_materia(enviar_materia, dificuldade)
-                self.manager.current = 'ciclo'
+                self.mostrar_popup("Sucesso!", "Matéria adicionada com sucesso.")
+                # Reseta os campos
+                # self.manager.current = 'ciclo'
+                self.enviar_materia = self.nome_materia.text = ''
+                self.nivel_diff = self.spinner_diff.text = 'Selecione'
             except ValueError:
-                self.mostrar_popup("Erro", "Por favor, selecione um nível de dificuldade.")
+                self.mostrar_popup("Erro!", "Por favor, selecione um nível de dificuldade.")
         else:
-            self.mostrar_popup("Erro", "Insira um valor válido.")
-            
-        self.enviar_materia = self.nome_materia.text = ''
-        self.nivel_diff = self.spinner_diff.text = 'Selecione'
+            self.mostrar_popup("Erro!", "Insira um valor válido.")
+        

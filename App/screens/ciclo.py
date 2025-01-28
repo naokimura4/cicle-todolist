@@ -4,6 +4,8 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+import math
+
 
 class Ciclo(Screen):
     materias = []
@@ -26,7 +28,7 @@ class Ciclo(Screen):
         for materia in self.materias:
             dificuldade = materia["dificuldade"]
             if dificuldade == 1:
-                materia["checkboxes"] = int(valor_base * 5)
+                materia["checkboxes"] = int(valor_base * 5) # Adicionar Math.ceil()
             elif dificuldade == 2:
                 materia["checkboxes"] = int(valor_base * 3)
             elif dificuldade == 3:
@@ -54,8 +56,10 @@ class Ciclo(Screen):
             ))
 
             checkboxes_layout = BoxLayout(orientation='horizontal', spacing=10)
-            for _ in range(quantidade):
+            for i in range(quantidade):
                 checkbox = CheckBox(size_hint=(None, None), size=(40, 40))
+                checkbox.active = materia.get("checkbox_states", [False] * quantidade)[i]
+                checkbox.bind(active=self.on_checkbox_active(materia, i))
                 checkboxes_layout.add_widget(checkbox)
 
             linha_layout.add_widget(checkboxes_layout)
@@ -69,6 +73,13 @@ class Ciclo(Screen):
             linha_layout.add_widget(excluir_button)
 
             grid_layout.add_widget(linha_layout)
+
+    def on_checkbox_active(self, materia, index): ## Manter ativado quando clicar em voltar
+        def callback(checkbox, value):
+            if "checkbox_states" not in materia:
+                materia["checkbox_states"] = [False] * materia["checkboxes"]
+            materia["checkbox_states"][index] = value
+        return callback
 
     def adicionar_materia(self, nome, dificuldade):
         self.materias.append({"nome": nome, "dificuldade": dificuldade})

@@ -15,62 +15,150 @@
 <Welcome>:
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
+        spacing: 20
+        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
         Label:
             text: "Bem-vindo ao Ciclo de Estudos"
             font_size: 50
-
+            color: 1, 1, 1, 1  # Texto branco
+            halign: 'center'  # Centraliza horizontalmente
+            valign: 'middle'  # Centraliza verticalmente
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None  # Permite quebra de linha
         Label:
             text: "Organize seu tempo e estudos de forma eficaz! :)"
             font_size: 20
+            color: 0.8, 0.8, 0.8, 1  # Texto cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
+        BoxLayout:
+            size_hint_y: None
+            height: 80  # Altura fixa para o botão
+            padding: [50, 0]  # Deixa o botão mais centralizado horizontalmente
+            Button:
+                text: "Começar"
+                font_size: 25
+                background_color: 0.2, 0.6, 0.8, 1  # Azul
+                background_normal: ''  # Remove o estilo padrão
+                color: 1, 1, 1, 1  # Texto branco
+                size_hint: (0.5, 1)  # Botão centralizado e menor
+                on_release: app.root.current = 'transicao'
+        Label:
+            text: 'Toque no botão acima para continuar'
+            font_size: 16
+            color: 0.7, 0.7, 0.7, 1  # Texto cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
 
-        Button:
-            text: "Começar"
-            font_size: 25
-            background_color: (0, 1, 0, 1)
-            on_press: self.background_color = (1, 0, 0, 1)
-            on_release: 
-                self.background_color = (0, 1, 0, 1)
-                app.root.current = 'transicao'
 
 <TransitionHorario>:
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
+        spacing: 20
+        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
         Label:
             text: 'Antes de começar, vamos calcular sua carga horária semanal'
             font_size: 20
-        Button:
-            text: 'Definir Carga Horária'
-            font_size: 25
-            on_release: app.root.current = 'horario'
-        
+            color: 1, 1, 1, 1  # Texto branco
+            halign: 'center'  # Centraliza horizontalmente
+            valign: 'middle'  # Centraliza verticalmente
+            size_hint_y: 1 
+            height: self.texture_size[1] + 20  # Ajusta a altura com base no texto
+            text_size: self.width, None  # Permite quebra de linha
+        BoxLayout:
+            size_hint_y: None
+            height: 80  # Altura fixa para o botão
+            padding: [50, 0]  # Deixa o botão mais centralizado horizontalmente
+            Button:
+                text: 'Definir Carga Horária'
+                font_size: 20
+                background_color: 0.2, 0.6, 0.8, 1  # Azul
+                background_normal: ''  # Remove o estilo padrão
+                color: 1, 1, 1, 1  # Texto branco
+                size_hint: (0.5, 1)  # Reduz o tamanho horizontal
+                on_release: app.root.current = 'horario'
+        Label:
+            text: 'Toque no botão acima para continuar'
+            font_size: 16
+            color: 0.7, 0.7, 0.7, 1  # Texto cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
 
 <Menu>:
     BoxLayout:    
         orientation: 'vertical'
-        spacing: 10
-        padding: 20
+        spacing: 20
+        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
         Label: 
             text: "Ciclo de Estudos"
             font_size: 60
+            color: 1, 1, 1, 1  # Texto branco
+            bold: True
+            size_hint_y: None
+            height: 100
         Button:
             text: "Adicionar Matéria"
             font_size: 25
-            on_release: app.root.current = 'materia'  # Corrigido
+            background_color: 0.2, 0.6, 0.8, 1  # Azul
+            background_normal: ''  # Remove imagem padrão
+            color: 1, 1, 1, 1  # Texto branco
+            size_hint_y: None
+            height: 60
+            on_release: app.root.current = 'materia'
         Button:
             text: "Ajustar Horário"
             font_size: 25
-            on_release: app.root.current = 'horario'  # Corrigido
+            background_color: 0.2, 0.6, 0.8, 1
+            background_normal: ''
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: 60
+            on_release: app.root.current = 'horario'
         Button: 
             text: "Ver Ciclo"
             font_size: 25
+            background_color: 0.2, 0.6, 0.8, 1
+            background_normal: ''
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: 60
             on_release: app.root.current = 'ciclo'
-            # Adicionar Tela do Ciclo
         Button:
             text: "Sair"
             font_size: 25
+            background_color: 0.8, 0.2, 0.2, 1  # Vermelho
+            background_normal: ''
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: 60
             on_release: app.stop()
 
 <InputMateria>:
@@ -183,7 +271,7 @@
             height: 40
 
         Button:
-            text: "Cancelar"
+            text: "Menu Principal"
             bold: True
             font_size: 18
             size_hint: (1, None)
@@ -195,7 +283,12 @@
         orientation: 'vertical'
         padding: 20
         spacing: 10
-
+        Label: 
+            text: "Matérias Adicionadas"
+            font_size: 60
+        Label:
+            text: "Adicione as matérias que deseja estudar"
+            font_size: 20
         ScrollView:
             GridLayout:
                 id: grid_layout
