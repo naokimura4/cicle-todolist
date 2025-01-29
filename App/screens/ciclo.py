@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-import math
+from math import ceil
 
 
 class Ciclo(Screen):
@@ -28,15 +28,15 @@ class Ciclo(Screen):
         for materia in self.materias:
             dificuldade = materia["dificuldade"]
             if dificuldade == 1:
-                materia["checkboxes"] = int(valor_base * 5) # Adicionar Math.ceil()
+                materia["checkboxes"] = max(1,ceil(int(valor_base * 5))) # Adicionar Math.ceil()
             elif dificuldade == 2:
-                materia["checkboxes"] = int(valor_base * 3)
+                materia["checkboxes"] = max(1,ceil(int(valor_base * 3)))
             elif dificuldade == 3:
-                materia["checkboxes"] = int(valor_base * 3)
+                materia["checkboxes"] = max(1,ceil(int(valor_base * 3)))
             elif dificuldade == 4:
-                materia["checkboxes"] = int(valor_base * 2)
+                materia["checkboxes"] = max(1,ceil(int(valor_base * 2)))
             elif dificuldade == 5:
-                materia["checkboxes"] = int(valor_base * 1)
+                materia["checkboxes"] = max(1,ceil(int(valor_base * 1)))
 
     def populate_materias(self):
         grid_layout = self.ids.grid_layout
@@ -63,7 +63,7 @@ class Ciclo(Screen):
                 checkboxes_layout.add_widget(checkbox)
 
             linha_layout.add_widget(checkboxes_layout)
-
+            # Se todas as checkbox forem concluidas, inserir um popup de 'parabéns'
             excluir_button = Button(
                 text="Excluir",
                 size_hint_x=None,

@@ -167,14 +167,34 @@
 
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
-
+        spacing: 20
+        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label: 
+            text: "Adicionar Matéria"
+            font_size: 60
+            color: 1, 1, 1, 1  # Texto branco
+            bold: True
+            size_hint_y: None
+            height: 100
+        Label:
+            text: "Adicione uma matéria e sua dificuldade"
+            font_size: 20
+            color: 0.8, 0.8, 0.8, 1  # Texto cinza claro
+        
         TextInput:
             id: nome_input
             hint_text: "Nome da Matéria"
             size_hint_y: None
             height: 50
+            font_size: 18
+            background_color: 1, 1, 1, 1  # Fundo branco para contraste
+            foreground_color: 0, 0, 0, 1  # Texto preto
 
         Spinner:
             id: dificuldade_spinner
@@ -182,20 +202,33 @@
             values: ["1 - Péssimo", "2 - Ruim", "3 - Mediano", "4 - Bom", "5 - Excelente"]
             size_hint_y: None
             height: 50
+            font_size: 18
+            background_color: 0.2, 0.6, 0.8, 1  # Azul
+            color: 1, 1, 1, 1  # Texto branco
 
         BoxLayout:
+            spacing: 10
+            size_hint_y: None
+            height: 60
+            padding: [50, 0]
+
             Button:
                 text: "Salvar"
-                size_hint_y: None
-                height: 50
+                font_size: 20
+                background_color: 0.2, 0.6, 0.8, 1  # Azul
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.5, 1)
                 on_release: root.salvar_materia()
 
             Button:
                 text: "Cancelar"
-                size_hint_y: None
-                height: 50
+                font_size: 20
+                background_color: 0.8, 0.2, 0.2, 1  # Vermelho
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.5, 1)
                 on_release: app.root.current = 'menu'
-
 <TelaHorario>:
     dias_input: dias_input
     horas_input: horas_input
@@ -203,109 +236,185 @@
 
     BoxLayout:
         orientation: 'vertical'
-        padding: [20, 30, 20, 30]  # Adiciona padding proporcional (esquerda, topo, direita, base)
-        spacing: 15  # Mais espaçamento entre os elementos
+        spacing: 20
+        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
 
         Label:
             text: "Calculadora de Carga Horária"
-            font_size: 28
+            font_size: 40
             bold: True
-            color: [0.2, 0.6, 0.8, 1]  # Cor em formato RGBA (azul claro)
-            size_hint_y: 1
-            height: 50
-
+            color: 1, 1, 1, 1  # Texto branco
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
+        Label:
+            text: "Informe o número de dias e horas que você deseja estudar por dia."
+            font_size: 18
+            italic: True
+            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 10
+            text_size: self.width, None
         BoxLayout:
             orientation: 'horizontal'
             spacing: 10
             size_hint_y: None
-            height: 40
-
-            # Label:
-            #     text: "Dias:"
-            #     size_hint_x: 0.4
-            #     font_size: 18
+            height: 50
 
             TextInput:
                 id: dias_input
                 hint_text: "Dias"
                 input_filter: "int"
+                font_size: 18
                 size_hint_x: 0.6
-                background_color: [1, 1, 1, 1]  # Fundo branco
-                foreground_color: [0, 0, 0, 1]  # Texto preto
+                height: 50
+                background_color: 1, 1, 1, 1  # Fundo branco
+                foreground_color: 0, 0, 0, 1  # Texto preto
 
         BoxLayout:
             orientation: 'horizontal'
             spacing: 10
             size_hint_y: None
-            height: 40
-
-            # Label:
-            #     text: "Horas por Dia:"
-            #     size_hint_x: 0.4
-            #     font_size: 18
+            height: 50
 
             TextInput:
                 id: horas_input
                 hint_text: "Horas por Dia"
                 input_filter: "int"
+                font_size: 18
                 size_hint_x: 0.6
-                background_color: [1, 1, 1, 1]
-                foreground_color: [0, 0, 0, 1]
-
-        Button:
-            text: "Calcular Carga Horária"
-            size_hint: (1, None)
+                height: 50
+                background_color: 1, 1, 1, 1
+                foreground_color: 0, 0, 0, 1
+        Label:
+            text: "ATENÇÃO: A horária máxima para dias é 7 e para horas é 24 para garantir um ciclo saudável"
             font_size: 18
-            bold: True
-            background_color: [0.2, 0.6, 0.8, 1]  # Azul claro
-            color: [1, 1, 1, 1]  # Texto branco
-            on_press: root.calcular_ch()  # Vincula ao método corrigido
+            italic: True
+            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 10
+            text_size: self.width, None
+
+        BoxLayout:
+            size_hint_y: None
+            height: 80
+            padding: [50, 0]
+
+            Button:
+                text: "Calcular Carga Horária"
+                font_size: 20
+                bold: True
+                background_color: 0.2, 0.6, 0.8, 1  # Azul claro
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.7, 1)
+                on_press: root.calcular_ch()
 
         Label:
             id: resultado_label
             text: "Carga Horária: "
             font_size: 20
             bold: True
-            color: [0, 0.4, 0, 1]  # Verde escuro
+            color: 0, 0.8, 0, 1  # Verde mais vibrante
+            halign: 'center'
+            valign: 'middle'
             size_hint_y: None
-            height: 40
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
 
-        Button:
-            text: "Menu Principal"
-            bold: True
-            font_size: 18
-            size_hint: (1, None)
-            background_color: [1, 0.2, 0.2, 1]  # Vermelho claro
-            color: [1, 1, 1, 1]  # Texto branco
-            on_release: app.root.current = 'menu'
+        BoxLayout:
+            size_hint_y: None
+            height: 80
+            padding: [50, 0]
+
+            Button:
+                text: "Menu Principal"
+                font_size: 20
+                bold: True
+                background_color: 0.8, 0.2, 0.2, 1  # Vermelho
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.7, 1)
+                on_release: app.root.current = 'menu'
+
 <Ciclo>:
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
+        spacing: 20
+        padding: [30, 50, 30, 50]  # Padding equilibrado para estética
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
         Label: 
             text: "Matérias Adicionadas"
-            font_size: 60
+            font_size: 35
+            bold: True
+            color: 1, 1, 1, 1  # Texto branco
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 20
+            text_size: self.width, None
+
         Label:
-            text: "Adicione as matérias que deseja estudar"
-            font_size: 20
+            text: "Para cada Checkbox, você estudará a matéria por 1 hora estudada. Você terá a liberdade de definir o tempo de estudo de cada matéria a medida que for estudando no seu dia a dia."
+            font_size: 18
+            italic: True
+            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 10
+            text_size: self.width, None
+
         ScrollView:
+            size_hint_y: 1
             GridLayout:
                 id: grid_layout
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
                 spacing: 10
+                padding: [10, 10]
 
         BoxLayout:
             size_hint_y: None
-            height: 50
-            spacing: 10
+            height: 60
+            spacing: 15
+            padding: [50, 0]
 
             Button:
                 text: "Adicionar Matéria"
+                font_size: 20
+                bold: True
+                background_color: 0.2, 0.6, 0.8, 1  # Azul
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.5, 1)
                 on_release: root.manager.current = 'materia'
 
             Button:
                 text: 'Voltar'
+                font_size: 20
+                bold: True
+                background_color: 0.8, 0.2, 0.2, 1  # Vermelho
+                background_normal: ''
+                color: 1, 1, 1, 1
+                size_hint: (0.5, 1)
                 on_release: app.root.current = 'menu'
