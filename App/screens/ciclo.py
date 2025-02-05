@@ -107,13 +107,19 @@ class Ciclo(Screen):
         )
         pop.open()
         
-    def mostrar_excluido(self,nome_materia):
+    def mostrar_excluido(self, nome_materia):
+        label = Label(
+            text=f'A matéria de {nome_materia} foi excluída com sucesso!',
+            size_hint_y=None
+        )
+        label.bind(texture_size=lambda instance, value: setattr(instance, 'height', value[1]))  # Ajusta a altura
         pop = Popup(
             title='Matéria Excluída',
-            content=Label(text=f'{nome_materia} foi excluída com sucesso!'),
-            size_hint= (None, None), size=(400,100),
-            padding=(10,10,10,10)
+            content=label,
+            size_hint=(None, None),  # Permite definir tamanho manualmente
         )
+        # Ajusta o tamanho do popup baseado no tamanho do texto
+        label.bind(texture_size=lambda instance, value: pop.setter('size')(pop, (value[0] + 40, value[1] + 60)))
         pop.open()
 
     def adicionar_materia(self, nome, dificuldade):
