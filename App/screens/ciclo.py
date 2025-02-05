@@ -4,12 +4,16 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from math import ceil
+import json
+from screens.input_materia import InputMateria
 
+# IMPLEMENTAR O JSON NO CÓDIGO E CARREGA-LO
 
 class Ciclo(Screen):
     materias = []
-    carga_horaria = 0
+    carga_horaria = 0 # Salvar a carga horária definida ao ser fechado.
 
     def on_enter(self):
         # Obtém a carga horária do ScreenManager
@@ -56,14 +60,19 @@ class Ciclo(Screen):
             ))
 
             checkboxes_layout = BoxLayout(orientation='horizontal', spacing=10)
+
+            # Garantir que "checkbox_states" tem o tamanho correto
+            if "checkbox_states" not in materia or len(materia["checkbox_states"]) != quantidade:
+                materia["checkbox_states"] = [False] * quantidade
+
             for i in range(quantidade):
                 checkbox = CheckBox(size_hint=(None, None), size=(40, 40))
-                checkbox.active = materia.get("checkbox_states", [False] * quantidade)[i]
+                checkbox.active = materia["checkbox_states"][i]
                 checkbox.bind(active=self.on_checkbox_active(materia, i))
                 checkboxes_layout.add_widget(checkbox)
 
             linha_layout.add_widget(checkboxes_layout)
-            # Se todas as checkbox forem concluidas, inserir um popup de 'parabéns'
+
             excluir_button = Button(
                 text="Excluir",
                 size_hint_x=None,
@@ -79,7 +88,24 @@ class Ciclo(Screen):
             if "checkbox_states" not in materia:
                 materia["checkbox_states"] = [False] * materia["checkboxes"]
             materia["checkbox_states"][index] = value
+            if all(materia["checkbox_states"]):
+                self.mostrar_concluido(materia["nome"])
         return callback
+    
+    def verificar_checkbox(self):
+        for materia in self.materias:
+            if not all(materia["checkbox_states"]):
+                return False
+        return True
+    
+    def mostrar_concluido(self,nome_materia):
+        pop = Popup(
+            title='Concluído',
+            content=Label(text=f'{nome_materia} foi concluída com sucesso!'),
+            size_hint=(None, None), size=(400, 100),
+            padding=(10, 10, 10, 10)
+        )
+        pop.open()
 
     def adicionar_materia(self, nome, dificuldade):
         self.materias.append({"nome": nome, "dificuldade": dificuldade})

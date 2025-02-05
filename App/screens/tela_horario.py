@@ -1,5 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
+from kivy.uix.popup import Popup
 
 class TelaHorario(Screen):
     dias_input = ObjectProperty(None)
@@ -17,3 +18,12 @@ class TelaHorario(Screen):
             self.manager.carga_horaria = carga_horaria
         except ValueError:
             self.resultado_label.text = 'Por favor, insira valores válidos.'
+            
+    def aviso_popup(self,mensagem):
+        pop = Popup(
+            title='Aviso',
+            content=Label(text=mensagem),
+            size_hint=(None, None), size=(400, 100),
+            padding=(10, 10, 10, 10)
+        )
+        pop.open()

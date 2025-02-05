@@ -7,6 +7,10 @@ from screens.ciclo import Ciclo
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
+from kivy.config import Config
+
+Config.set('graphics', 'height', '720')
+Config.set('graphics', 'width', '1280')
 
 # Definindo a tela do menu
 class Gerenciador(ScreenManager):
@@ -16,7 +20,7 @@ class Gerenciador(ScreenManager):
 class MyCicleStudyApp(App):
     def build(self):
         # Carregando o arquivo KV
-        Builder.load_file('Gerenciador.kv')
+        Builder.load_file('assets/Gerenciador.kv')
         # Criando o ScreenManager e adicionando a tela do menu
         sm = Gerenciador()
         sm.current = 'welcome'
