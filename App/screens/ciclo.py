@@ -106,6 +106,15 @@ class Ciclo(Screen):
             padding=(10, 10, 10, 10)
         )
         pop.open()
+        
+    def mostrar_excluido(self,nome_materia):
+        pop = Popup(
+            title='Matéria Excluída',
+            content=Label(text=f'{nome_materia} foi excluída com sucesso!'),
+            size_hint= (None, None), size=(400,100),
+            padding=(10,10,10,10)
+        )
+        pop.open()
 
     def adicionar_materia(self, nome, dificuldade):
         self.materias.append({"nome": nome, "dificuldade": dificuldade})
@@ -113,6 +122,8 @@ class Ciclo(Screen):
         self.populate_materias()
 
     def excluir_materia(self, index):
+        materia_excluida = self.materias[index]["nome"]
         del self.materias[index]
         self.calcular_checkboxes()
         self.populate_materias()
+        self.mostrar_excluido(materia_excluida)
