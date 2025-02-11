@@ -1,0 +1,43 @@
+{
+    "carga_horaria": 12,
+    "materias": [
+        {
+            "nome": "Matem\u00e1tica",
+            "dificuldade": 2,
+            "checkboxes": 4,
+            "checkbox_states": [
+                true,
+                true,
+                true,
+                true
+            ]
+        },
+        {
+            "nome": "Geografia",
+            "dificuldade": 3,
+            "checkboxes": 3,
+            "checkbox_states": [
+                true,
+                true,
+                true
+            ]
+        },
+        {
+            "nome": "Portugu\u00eas",
+            "dificuldade": 4,
+            "checkboxes": 2,
+            "checkbox_states": [
+                true,
+                true
+            ]
+        },
+        {
+            "nome": "Hist\u00f3ria",
+            "dificuldade": 5,
+            "checkboxes": 1,
+            "checkbox_states": [
+                true
+            ]
+        }
+    ]
+}
