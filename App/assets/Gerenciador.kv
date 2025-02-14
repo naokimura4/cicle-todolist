@@ -69,8 +69,7 @@
             size_hint_y: None
             height: self.texture_size[1] + 20
             text_size: self.width, None
-
-
+            
 <TransitionHorario>:
     BoxLayout:
         orientation: 'vertical'
@@ -126,52 +125,72 @@
 <Menu>:
     BoxLayout:    
         orientation: 'vertical'
-        spacing: 20
-        padding: [30, 50, 30, 50]  # [left, top, right, bottom]
+        spacing: 25
+        padding: [40, 60, 40, 60]  # [left, top, right, bottom]
+        
         canvas.before:
             Color:
-                rgba: 0.1, 0.2, 0.3, 1  # Fundo azul escuro
+                rgba: 0.08, 0.12, 0.2, 1  # Fundo azul escuro suave
             Rectangle:
                 size: self.size
                 pos: self.pos
+        
         Label: 
             text: "Ciclo de Estudos"
-            font_size: 60
+            font_size: 50
             color: 1, 1, 1, 1  # Texto branco
             bold: True
-            size_hint_y: 1
+            size_hint_y: None
             height: 100
+            
         Button:
             text: "Adicionar Matéria"
-            font_size: 25
+            font_size: 22
             background_color: 0.2, 0.6, 0.8, 1  # Azul
             background_normal: ''  # Remove imagem padrão
             color: 1, 1, 1, 1  # Texto branco
             size_hint_y: None
             height: 60
             on_release: app.root.current = 'materia'
+            
         Button:
             text: "Ajustar Horário"
-            font_size: 25
+            font_size: 22
             background_color: 0.2, 0.6, 0.8, 1
             background_normal: ''
             color: 1, 1, 1, 1
             size_hint_y: None
             height: 60
             on_release: app.root.current = 'horario'
+            
         Button: 
             text: "Ver Ciclo"
-            font_size: 25
+            font_size: 22
             background_color: 0.2, 0.6, 0.8, 1
             background_normal: ''
             color: 1, 1, 1, 1
             size_hint_y: None
             height: 60
             on_release: app.root.current = 'ciclo'
+        
+        Button:
+            text: "Resetar Matérias"
+            font_size: 22
+            background_color: 1, 0.5, 0, 1  # Laranja para alerta
+            background_normal: ''
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: 60
+            on_release: root.resetar_dados()
+
+        # Widget:  # Espaço extra para melhor distribuição
+        #     size_hint_y: None
+        #     height: 20
+        
         Button:
             text: "Sair"
-            font_size: 25
-            background_color: 0.8, 0.2, 0.2, 1  # Vermelho
+            font_size: 22
+            background_color: 0.8, 0.2, 0.2, 1  # Vermelho para indicar saída
             background_normal: ''
             color: 1, 1, 1, 1
             size_hint_y: None
@@ -435,7 +454,7 @@
                 color: 1, 1, 1, 1
                 size_hint: (0.5, 1)
                 on_release: root.manager.current = 'materia'
-
+            
             Button:
                 text: 'Voltar'
                 font_size: 20
