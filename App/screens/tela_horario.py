@@ -2,6 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from screens.ciclo import *
 from assets.storage import salvar_dados, carregar_dados  # Importamos as funções de salvamento
 
 class TelaHorario(Screen):
@@ -38,5 +39,4 @@ class TelaHorario(Screen):
             salvar_dados(carga_horaria, self.manager.get_screen("ciclo").materias)
             
         except ValueError:
-            self.resultado_label.text = 'Por favor, insira valores válidos.'   
             self.aviso_popup('Error', 'Preencha todos os campos corretamente!')
