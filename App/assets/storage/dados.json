@@ -1,0 +1,22 @@
+{
+    "carga_horaria": 2,
+    "materias": [
+        {
+            "nome": "Hist\u00f3ria",
+            "dificuldade": 3,
+            "checkboxes": 1,
+            "checkbox_states": [
+                true
+            ]
+        },
+        {
+            "nome": "Geografia",
+            "dificuldade": 5,
+            "checkboxes": 1,
+            "checkbox_states": [
+                true
+            ]
+        }
+    ],
+    "ultima_data": "2025-02-18"
+}

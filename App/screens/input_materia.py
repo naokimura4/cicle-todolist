@@ -11,7 +11,7 @@ class InputMateria(Screen):
 
     def on_enter(self):
         """Carrega as matérias salvas ao entrar na tela."""
-        _, materias = carregar_dados()
+        _, materias, _ = carregar_dados()
         self.manager.get_screen('ciclo').materias = materias  # Atualiza a lista de matérias
 
     def mostrar_popup(self, titulo, mensagem):

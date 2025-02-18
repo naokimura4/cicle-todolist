@@ -12,9 +12,17 @@ class TelaHorario(Screen):
     
     def on_enter(self):
         """Carregar a carga horária salva ao entrar na tela."""
-        carga_horaria, _ = carregar_dados()
+        carga_horaria, _, _ = carregar_dados()  # Agora pegando corretamente os 3 valores retornados
+
         if carga_horaria > 0:
             self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
+
+        else:
+            carga_horaria = 0  # Valor padrão
+
+        if carga_horaria > 0:
+            self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
+
 
     def aviso_popup(self, titulo, mensagem):
         """Exibe uma mensagem popup de aviso."""
