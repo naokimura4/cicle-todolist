@@ -19,28 +19,32 @@ class Ciclo(Screen):
     def on_enter(self):
         if not self.materias:  # Só carrega se a lista estiver vazia
             self.carga_horaria, self.materias, self.ultima_data = carregar_dados()
+        self.verificar_reset_diario()  # Adicionado para garantir reset automático
         self.calcular_checkboxes()
         self.populate_materias()
-        self.verificar_reset_diario()  # Adicionado para garantir reset automático
 
     def verificar_reset_diario(self):
         hoje = datetime.date.today()
         
-        if self.ultima_data:
-            ultima_data = datetime.date.fromisoformat(self.ultima_data)
+        if not self.ultima_data:  # Se não houver uma última data salva, definir como hoje
+            self.ultima_data = hoje.isoformat()
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            return
+        
+        # Converter a string da última data salva para um objeto de data
+        ultima_data = datetime.date.fromisoformat(self.ultima_data)
+        
+        if hoje == ultima_data:
+            return
+        
+        for materia in self.materias:  # Corrigido `self.materia` para `self.materias`
+            materia["checkbox_states"] = [False] * len(materia["checkbox_states"])
             
-            # Se o último reset não foi feito hoje, reseta as checkboxes
-            if hoje > ultima_data:
-                for materia in self.materias:
-                    materia["checkbox_states"] = [False] * len(materia["checkbox_states"])
-                
-                # Atualiza a última data salva
-                self.ultima_data = hoje.isoformat()
-                salvar_dados(self.carga_horaria, self.materias)  # Salvar com nova data
-
-        # Atualiza a UI após reset
+        self.ultima_data = hoje.isoformat()
+        salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+        
         self.populate_materias()
-
+        
     def calcular_checkboxes(self):
         contador_de_diff = sum(materia.get("dificuldade", 1) for materia in self.materias)
         if contador_de_diff == 0:
@@ -78,14 +82,18 @@ class Ciclo(Screen):
             linha_layout.add_widget(checkboxes_layout)
 
             excluir_button = Button(text="Excluir", size_hint_x=None, width=100)
-            excluir_button.bind(on_release=lambda btn, idx=index: self.excluir_materia_popup(idx))
+            excluir_button.bind(on_release=self.criar_excluir_callback(index))  # Corrigido
+
             linha_layout.add_widget(excluir_button)
             grid_layout.add_widget(linha_layout)
+
+    def criar_excluir_callback(self, index):
+        return lambda btn: self.excluir_materia_popup(index)
 
     def on_checkbox_active(self, materia, index):
         def callback(checkbox, value):
             materia["checkbox_states"][index] = value
-            salvar_dados(self.carga_horaria, self.materias)
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
             
             if all(materia["checkbox_states"]):
                 self.materia_concluida_popup(materia["nome"])
@@ -102,8 +110,7 @@ class Ciclo(Screen):
             self.materias.append(nova_materia)
             self.calcular_checkboxes()
             self.populate_materias()
-            salvar_dados(self.carga_horaria, self.materias)
-            debug_json()
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
         except Exception as e:
             print(f"Erro ao adicionar matéria: {e}") 
             
@@ -111,15 +118,29 @@ class Ciclo(Screen):
         nome_materia = self.materias[index]["nome"]
         largura_popup = max(350, min(150 + len(nome_materia) * 15, 800))
 
-        layout = BoxLayout(orientation='vertical', spacing=20, padding=20)
+        layout = BoxLayout(orientation='vertical', spacing=20, padding=(20,0))  # Adicionado padding interno
 
-        label = Label(text=f"Tem certeza que deseja excluir '{nome_materia}'?", 
-                      font_size=18, halign='center', valign='middle', size_hint_y=None, height=50)
+        label = Label(
+            text=f"Tem certeza que deseja excluir:\n'{nome_materia}'\n",
+            font_size=18,
+            halign='center',
+            valign='middle',
+            size_hint=(1, None),  # Mantém o alinhamento correto
+            height=50
+        )
 
-        botoes_layout = BoxLayout(orientation='horizontal', spacing=20, size_hint=(None, None), size=(200, 50), pos_hint={"center_x": 0.5})
+        botoes_layout = BoxLayout(
+            orientation='horizontal',
+            spacing=20,
+            size_hint=(None, None),
+            size=(200, 50),
+            pos_hint={"center_x": 0.5}  # Centraliza os botões no popup
+        )
 
         btn_confirmar = Button(text="Sim", size_hint=(None, None), size=(90, 50))
         btn_cancelar = Button(text="Não", size_hint=(None, None), size=(90, 50))
+
+        popup = Popup(title="Confirmação", content=layout, size_hint=(None, None), size=(largura_popup, 200))  
 
         btn_confirmar.bind(on_release=lambda btn: self.confirmar_exclusao(index, popup))
         btn_cancelar.bind(on_release=lambda btn: popup.dismiss())
@@ -130,22 +151,23 @@ class Ciclo(Screen):
         layout.add_widget(label)
         layout.add_widget(botoes_layout)
 
-        popup = Popup(title="Confirmação", content=layout, size_hint=(None, None), size=(largura_popup, 200))  
         popup.open()
+
+    def materia_concluida_popup(self, nome_materia):
+        popup = Popup(
+            title="Matéria Concluída",
+            content=Label(
+                text=f"Parabéns! Você concluiu {nome_materia}!",
+                halign="center",
+                valign="middle",
+                font_size=18,
+            ),
+            size_hint=(None, None),
+            size=(400, 150),
+        )
+        popup.open()
+        Clock.schedule_once(lambda dt: popup.dismiss(), 2)  # Fecha após 2 segundos
 
     def confirmar_exclusao(self, index, popup):
         popup.dismiss()
         self.excluir_materia(index)
-
-    def materia_concluida_popup(self, nome_materia):
-        popup = Popup(title="Matéria Concluída",
-                      content=Label(text=f"Parabéns! Você concluiu {nome_materia}!"),
-                      size_hint=(None, None), size=(400, 100))
-        popup.open()
-        Clock.schedule_once(lambda dt: popup.dismiss(), 2)  # Fecha após 2 segundos
-            
-    def excluir_materia(self, index):
-        del self.materias[index]
-        self.calcular_checkboxes()
-        self.populate_materias()
-        salvar_dados(self.carga_horaria, self.materias)
