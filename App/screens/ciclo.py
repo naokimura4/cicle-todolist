@@ -167,7 +167,12 @@ class Ciclo(Screen):
         )
         popup.open()
         Clock.schedule_once(lambda dt: popup.dismiss(), 2)  # Fecha após 2 segundos
-
+    def excluir_materia(self, index):
+        """Remove a matéria da lista e atualiza a interface"""
+        if 0 <= index < len(self.materias):  # Garante que o índice seja válido
+            del self.materias[index]
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            self.populate_materias()  # Atualiza a tela após a exclusão
     def confirmar_exclusao(self, index, popup):
-        popup.dismiss()
+        popup.dismiss()  # Fecha o popup de confirmação
         self.excluir_materia(index)

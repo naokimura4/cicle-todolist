@@ -11,8 +11,7 @@ class TelaHorario(Screen):
     resultado_label = ObjectProperty(None)
     
     def on_enter(self):
-        """Carregar a carga horária salva ao entrar na tela."""
-        carga_horaria, _, _ = carregar_dados()  # Agora pegando corretamente os 3 valores retornados
+        carga_horaria, _, _ = carregar_dados()  
 
         if carga_horaria > 0:
             self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
@@ -25,7 +24,6 @@ class TelaHorario(Screen):
 
 
     def aviso_popup(self, titulo, mensagem):
-        """Exibe uma mensagem popup de aviso."""
         pop = Popup(
             title=titulo,
             content=Label(text=mensagem),
@@ -35,7 +33,6 @@ class TelaHorario(Screen):
         pop.open()
 
     def calcular_ch(self):
-        """Calcula a carga horária e a salva no arquivo JSON."""
         try:
             dia = int(self.dias_input.text)
             horas_minimas = int(self.horas_input.text)

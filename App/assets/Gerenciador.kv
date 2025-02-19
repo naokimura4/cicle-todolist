@@ -182,10 +182,6 @@
             size_hint_y: None
             height: 60
             on_release: root.resetar_dados()
-
-        # Widget:  # Espaço extra para melhor distribuição
-        #     size_hint_y: None
-        #     height: 20
         
         Button:
             text: "Sair"
@@ -196,7 +192,6 @@
             size_hint_y: None
             height: 60
             on_release: app.stop()
-
 <InputMateria>:
     nome_materia: nome_input
     spinner_diff: dificuldade_spinner
@@ -235,6 +230,7 @@
             id: nome_input
             hint_text: "Nome da Matéria"
             size_hint_y: None
+            multiline: False
             height: 50
             font_size: 18
             background_color: 1, 1, 1, 1  # Fundo branco para contraste
@@ -438,7 +434,27 @@
                 height: self.minimum_height
                 spacing: 10
                 padding: [10, 10]
-
+# Mostrar quantos dias 
+        Label:
+            text: "Dia: 01/01/2001"
+            font_size: 18
+            italic: True
+            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 10
+            text_size: self.width, None
+        Label:
+            text: "Faltam x dias para resetar o ciclo!"
+            font_size: 18
+            italic: True
+            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            halign: 'center'
+            valign: 'middle'
+            size_hint_y: None
+            height: self.texture_size[1] + 10
+            text_size: self.width, None
         BoxLayout:
             size_hint_y: None
             height: 60

@@ -9,6 +9,7 @@ def debug_json(): # Analizar questão do "with"
         dados = json.load(file)
         print("Dados Salvos no JSON:", json.dumps(dados, indent=4))
 
+
 def salvar_dados(carga_horaria, materias, ultima_data=None):
     """Salva a carga horária, matérias e última data em um arquivo JSON."""
     dados = {
