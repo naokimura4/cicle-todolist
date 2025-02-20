@@ -6,38 +6,37 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.clock import Clock  # Para fechar popups automaticamente
+from kivy.clock import Clock  
 from math import ceil
-import datetime  # Corrigido erro de importação
-from assets.storage import *  # Importamos as funções
+import datetime  
+from assets.storage import *  
 
 class Ciclo(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.carga_horaria, self.materias, self.ultima_data = carregar_dados()  # Corrigido para carregar `ultima_data`
+        self.carga_horaria, self.materias, self.ultima_data = carregar_dados() 
 
     def on_enter(self):
-        if not self.materias:  # Só carrega se a lista estiver vazia
+        if not self.materias:  
             self.carga_horaria, self.materias, self.ultima_data = carregar_dados()
-        self.verificar_reset_diario()  # Adicionado para garantir reset automático
+        self.verificar_reset_diario()  
         self.calcular_checkboxes()
         self.populate_materias()
 
     def verificar_reset_diario(self):
         hoje = datetime.date.today()
         
-        if not self.ultima_data:  # Se não houver uma última data salva, definir como hoje
+        if not self.ultima_data:  
             self.ultima_data = hoje.isoformat()
             salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
             return
         
-        # Converter a string da última data salva para um objeto de data
         ultima_data = datetime.date.fromisoformat(self.ultima_data)
         
         if hoje == ultima_data:
             return
         
-        for materia in self.materias:  # Corrigido `self.materia` para `self.materias`
+        for materia in self.materias: 
             materia["checkbox_states"] = [False] * len(materia["checkbox_states"])
             
         self.ultima_data = hoje.isoformat()
@@ -82,7 +81,7 @@ class Ciclo(Screen):
             linha_layout.add_widget(checkboxes_layout)
 
             excluir_button = Button(text="Excluir", size_hint_x=None, width=100)
-            excluir_button.bind(on_release=self.criar_excluir_callback(index))  # Corrigido
+            excluir_button.bind(on_release=self.criar_excluir_callback(index))  
 
             linha_layout.add_widget(excluir_button)
             grid_layout.add_widget(linha_layout)
@@ -118,14 +117,14 @@ class Ciclo(Screen):
         nome_materia = self.materias[index]["nome"]
         largura_popup = max(350, min(150 + len(nome_materia) * 15, 800))
 
-        layout = BoxLayout(orientation='vertical', spacing=20, padding=(20,0))  # Adicionado padding interno
+        layout = BoxLayout(orientation='vertical', spacing=20, padding=(20,0)) 
 
         label = Label(
             text=f"Tem certeza que deseja excluir:\n'{nome_materia}'\n",
             font_size=18,
             halign='center',
             valign='middle',
-            size_hint=(1, None),  # Mantém o alinhamento correto
+            size_hint=(1, None), 
             height=50
         )
 
@@ -134,7 +133,7 @@ class Ciclo(Screen):
             spacing=20,
             size_hint=(None, None),
             size=(200, 50),
-            pos_hint={"center_x": 0.5}  # Centraliza os botões no popup
+            pos_hint={"center_x": 0.5}  
         )
 
         btn_confirmar = Button(text="Sim", size_hint=(None, None), size=(90, 50))
@@ -166,13 +165,12 @@ class Ciclo(Screen):
             size=(400, 150),
         )
         popup.open()
-        Clock.schedule_once(lambda dt: popup.dismiss(), 2)  # Fecha após 2 segundos
+        Clock.schedule_once(lambda dt: popup.dismiss(), 2) 
     def excluir_materia(self, index):
-        """Remove a matéria da lista e atualiza a interface"""
-        if 0 <= index < len(self.materias):  # Garante que o índice seja válido
+        if 0 <= index < len(self.materias): 
             del self.materias[index]
             salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
-            self.populate_materias()  # Atualiza a tela após a exclusão
+            self.populate_materias()  
     def confirmar_exclusao(self, index, popup):
-        popup.dismiss()  # Fecha o popup de confirmação
+        popup.dismiss()  
         self.excluir_materia(index)
