@@ -14,14 +14,37 @@ from assets.storage import *
 class Ciclo(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.carga_horaria, self.materias, self.ultima_data = carregar_dados() 
+        self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset = carregar_dados() 
 
     def on_enter(self):
+        self.atualizar_data()
         if not self.materias:  
             self.carga_horaria, self.materias, self.ultima_data = carregar_dados()
         self.verificar_reset_diario()  
         self.calcular_checkboxes()
         self.populate_materias()
+        
+    def atualizar_data(self):
+        """Atualiza a data atual e os dias restantes para resetar as checkboxes."""
+        hoje = datetime.date.today()
+        
+        # Atualiza o texto com a data atual
+        if 'data_atual' in self.ids:
+            self.ids.data_atual.text = f"Dia: {hoje.strftime('%d/%m/%Y')}"
+        
+        # Garante que ultima_data nunca seja None
+        if not self.ultima_data:
+            self.ultima_data = hoje.isoformat()
+
+        ultima_data = datetime.date.fromisoformat(self.ultima_data)
+        dias_passados = (hoje - ultima_data).days
+        dias_restantes = self.dias_para_reset - dias_passados
+
+        # Evita valores negativos e atualiza o texto
+        if 'dias_para_reset' in self.ids:
+            self.ids.dias_para_reset.text = f"Dias para Reset: {max(dias_restantes, 0)}"
+
+
 
     def verificar_reset_diario(self):
         hoje = datetime.date.today()

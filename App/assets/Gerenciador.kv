@@ -436,20 +436,23 @@
                 padding: [10, 10]
 # Mostrar quantos dias 
         Label:
-            text: "Dia: 01/01/2001"
+            id: data_atual
+            text: "Dia: --/--/----"
             font_size: 18
             italic: True
-            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            color: 0.7, 0.7, 0.7, 1
             halign: 'center'
             valign: 'middle'
             size_hint_y: None
             height: self.texture_size[1] + 10
             text_size: self.width, None
+
         Label:
-            text: "Faltam x dias para resetar o ciclo!"
+            id: dias_para_reset
+            text: "Faltam -- dias para resetar o ciclo!"
             font_size: 18
             italic: True
-            color: 0.7, 0.7, 0.7, 1  # Cinza claro
+            color: 0.7, 0.7, 0.7, 1
             halign: 'center'
             valign: 'middle'
             size_hint_y: None

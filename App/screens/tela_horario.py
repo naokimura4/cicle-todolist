@@ -11,7 +11,7 @@ class TelaHorario(Screen):
     resultado_label = ObjectProperty(None)
     
     def on_enter(self):
-        carga_horaria, _, _ = carregar_dados()  
+        carga_horaria, _, _, _ = carregar_dados()  
 
         if carga_horaria > 0:
             self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
@@ -34,14 +34,18 @@ class TelaHorario(Screen):
 
     def calcular_ch(self):
         try:
-            dia = int(self.dias_input.text)
+            dias = int(self.dias_input.text)  # 🔥 Pegando os dias inputados
             horas_minimas = int(self.horas_input.text)
-            carga_horaria = dia * horas_minimas
+            carga_horaria = dias * horas_minimas
+
             self.resultado_label.text = f'Carga Horária: {carga_horaria} horas'
-            self.aviso_popup("Atualizado","Carga Horária Atualizada!")
-            
-            self.manager.get_screen('ciclo').carga_horaria = carga_horaria
-            salvar_dados(carga_horaria, self.manager.get_screen("ciclo").materias)
-            
+            self.aviso_popup("Atualizado", "Carga Horária Atualizada!")
+
+            ciclo_screen = self.manager.get_screen('ciclo')
+            ciclo_screen.carga_horaria = carga_horaria
+            ciclo_screen.dias_para_reset = dias  # 🔥 Atualizando dias
+
+            salvar_dados(carga_horaria, ciclo_screen.materias, ciclo_screen.ultima_data, dias)
+
         except ValueError:
-            self.aviso_popup('Error', 'Preencha todos os campos corretamente!')
+            self.aviso_popup('Erro', 'Preencha todos os campos corretamente!')
