@@ -44,14 +44,14 @@ def carregar_dados():
         return 0, [], None, 1  # 🔥 Agora retorna 4 valores corretamente
 
     try:
-        with open(FILE_PATH, "r") as file:
+        with open(FILE_PATH, "r", encoding="utf-8") as file:
             dados = json.load(file)
             return (
                 dados.get("carga_horaria", 0),
                 dados.get("materias", []),
                 dados.get("ultima_data", None),
-                dados.get("dias_para_reset", 1)  # 🔥 Padrão 1 dia se não existir
+                dados.get("dias_para_reset", 1)  
             )
     except Exception as e:
         print(f"Erro ao carregar dados: {e}")
-        return 0, [], None, 1  # 🔥 Retorno seguro
+        return 0, [], None, 1  

@@ -1,3 +1,4 @@
+from kivy.core.window import Window
 from screens.menu import Menu
 from screens.input_materia import InputMateria
 from screens.tela_horario import TelaHorario 
@@ -9,17 +10,17 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.config import Config
 
-Config.set('graphics', 'height', '720')
-Config.set('graphics', 'width', '1280')
+Config.set('graphics', 'height', '1920')
+Config.set('graphics', 'width', '1080')
 
-# Definindo a tela do menu
+# ScreenManager
 class Gerenciador(ScreenManager):
     ...
 
-# Definindo o aplicativo principal
+# App Principal
 class MyCicleStudyApp(App):
     def build(self):
-        # Carregando o arquivo KV
+        Window.set_icon("App/img/logo.png")
         Builder.load_file('assets/Gerenciador.kv')
         # Criando o ScreenManager e adicionando a tela do menu
         sm = Gerenciador()
