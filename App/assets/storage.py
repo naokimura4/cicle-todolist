@@ -14,6 +14,19 @@ def debug_json():
         dados = json.load(file)
         print("Dados Salvos no JSON:", json.dumps(dados, indent=4, ensure_ascii=False))
 
+def inciar_storage():
+    if not os.path.exists(FILE_PATH):
+        dados_iniciais = {
+            "carga_horaria": 0,
+            "materias": [],
+            "ultima_data": datetime.date.today().isoformat(),
+            "dias_para_reset": 1
+        }
+        try:
+            with open(FILE_PATH, "w", encoding="utf-8") as f:
+                json.dump(dados_iniciais, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            logger.error("Erro ao inicializar storage: %s", e)
 
 def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=1):
     """Salva a carga horária, matérias, última data e dias para reset no JSON."""
@@ -29,7 +42,7 @@ def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=1):
             for m in materias
         ],
         "ultima_data": ultima_data or datetime.date.today().isoformat(),
-        "dias_para_reset": dias_para_reset  # <-- Correção: adicionada vírgula acima
+        "dias_para_reset": dias_para_reset  
     }
 
     try:
