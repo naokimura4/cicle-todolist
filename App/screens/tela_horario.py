@@ -43,6 +43,8 @@ class TelaHorario(Screen):
             horas_minimas = int(self.horas_input.text)
             if dias > 7 or horas_minimas >= 12:
                 self.aviso_popup("Aviso!", "Escolha pelo menos 7 dias na semana para poder estudar ou 12 horas.")
+            elif dias == 0 or horas_minimas ==0:
+                self.aviso_popup("Aviso!", "Não é possível adicionar valores 0 em ambos os campos! Preencha Corretamente")  
             else:
                 carga_horaria = dias * horas_minimas
 

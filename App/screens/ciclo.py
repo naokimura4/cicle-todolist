@@ -24,7 +24,7 @@ class Ciclo(Screen):
     def on_enter(self):
         self.atualizar_data()
         if not self.materias:
-            self.carga_horaria, self.materias, self.ultima_data = carregar_dados()
+            self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset = carregar_dados()
         self.verificar_reset_diario()
         self.calcular_checkboxes()
         self.populate_materias()
@@ -54,7 +54,7 @@ class Ciclo(Screen):
 
         if not self.ultima_data:
             self.ultima_data = hoje.isoformat()
-            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset)
             return
 
         ultima_data = datetime.date.fromisoformat(self.ultima_data)
@@ -66,10 +66,24 @@ class Ciclo(Screen):
             materia["checkbox_states"] = [False] * len(materia["checkbox_states"])
 
         self.ultima_data = hoje.isoformat()
-        salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+        salvar_dados(self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset)
 
         self.populate_materias()
 
+    def calcular_checkboxes(self):
+        contador_de_diff = sum(materia.get("dificuldade", 1) for materia in self.materias)
+        if contador_de_diff == 0:
+            return
+
+        valor_base = self.carga_horaria / contador_de_diff
+
+        for materia in self.materias:
+            dificuldade = materia.get("dificuldade", 1)
+            multiplicador = {1: 5, 2: 4, 3: 3, 4: 2, 5: 1}.get(dificuldade, 1)
+            materia["checkboxes"] = max(1, ceil(valor_base * multiplicador))
+
+            if "checkbox_states" not in materia or len(materia["checkbox_states"]) != materia["checkboxes"]:
+                materia["checkbox_states"] = [False] * materia["checkboxes"]
 
     def populate_materias(self):
         grid_layout = self.ids.grid_layout
@@ -81,8 +95,18 @@ class Ciclo(Screen):
 
             linha_layout = GridLayout(cols=3, size_hint_y=None, height=50, spacing=10)
 
-            # Nome da matéria
-            linha_layout.add_widget(Label(text=nome, font_size=18, size_hint_x=None, width=200))
+            # Nome da matéria com quebra de linha automática
+            nome_label = Label(
+                text=nome,
+                font_size=18,
+                size_hint_x=None,
+                width=200,  # Define uma largura fixa para o Label
+                text_size=(200, None),  # Permite a quebra de linha automática
+                halign="left",
+                valign="middle"
+            )
+
+            linha_layout.add_widget(nome_label)
 
             # Criando um ScrollView horizontal para os checkboxes
             scroll_view = ScrollView(
@@ -109,29 +133,13 @@ class Ciclo(Screen):
 
             grid_layout.add_widget(linha_layout)
 
-
     def criar_excluir_callback(self, index):
         return lambda btn: self.excluir_materia_popup(index)
 
-    def calcular_checkboxes(self):
-        contador_de_diff = sum(materia.get("dificuldade", 1) for materia in self.materias)
-        if contador_de_diff == 0:
-            return
-
-        valor_base = self.carga_horaria / contador_de_diff
-
-        for materia in self.materias:
-            dificuldade = materia.get("dificuldade", 1)
-            multiplicador = {1: 5, 2: 4, 3: 3, 4: 2, 5: 1}.get(dificuldade, 1)
-            materia["checkboxes"] = max(1, ceil(valor_base * multiplicador))
-
-            if "checkbox_states" not in materia or len(materia["checkbox_states"]) != materia["checkboxes"]:
-                materia["checkbox_states"] = [False] * materia["checkboxes"]
-                
     def on_checkbox_active(self, materia, index):
         def callback(checkbox, value):
             materia["checkbox_states"][index] = value
-            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset)
 
             if all(materia["checkbox_states"]):
                 self.materia_concluida_popup(materia["nome"])
@@ -148,16 +156,16 @@ class Ciclo(Screen):
             self.materias.append(nova_materia)
             self.calcular_checkboxes()
             self.populate_materias()
-            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset)
         except Exception as e:
             print(f"Erro ao adicionar matéria: {e}")
-    
+
     def excluir_materia(self, index):
         if 0 <= index < len(self.materias):
             del self.materias[index]
-            salvar_dados(self.carga_horaria, self.materias, self.ultima_data)
+            salvar_dados(self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset)
             self.populate_materias()
-            
+
     def excluir_materia_popup(self, index):
         nome_materia = self.materias[index]["nome"]
         largura_popup = max(350, min(150 + len(nome_materia) * 15, 800))

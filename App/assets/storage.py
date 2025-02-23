@@ -28,8 +28,11 @@ def inciar_storage():
         except Exception as e:
             logger.error("Erro ao inicializar storage: %s", e)
 
-def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=1):
+def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=None):
     """Salva a carga horária, matérias, última data e dias para reset no JSON."""
+    
+    _,_,_,dia_salvo = carregar_dados()
+    dias_para_reset = dias_para_reset if dias_para_reset is not None else dia_salvo
     dados = {
         "carga_horaria": carga_horaria,
         "materias": [
@@ -51,7 +54,6 @@ def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=1):
     except Exception as e:
         print(f"Erro ao salvar dados: {e}")
 
-
 def carregar_dados():
     if not os.path.exists(FILE_PATH):
         return 0, [], None, 1  # 🔥 Agora retorna 4 valores corretamente
@@ -67,4 +69,4 @@ def carregar_dados():
             )
     except Exception as e:
         print(f"Erro ao carregar dados: {e}")
-        return 0, [], None, 1  
+        return 0, [], None, 1
