@@ -56,7 +56,7 @@ def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=None
 
 def carregar_dados():
     if not os.path.exists(FILE_PATH):
-        return 0, [], None, 1  # 🔥 Agora retorna 4 valores corretamente
+        return 0, [], None, 0  # 🔥 Agora retorna 4 valores corretamente
 
     try:
         with open(FILE_PATH, "r", encoding="utf-8") as file:

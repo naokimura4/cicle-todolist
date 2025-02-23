@@ -29,7 +29,6 @@ class InputMateria(Screen):
     def salvar_materia(self):
         enviar_materia = self.nome_materia.text
         nivel_diff = self.spinner_diff.text
-
         if enviar_materia and nivel_diff != "Selecione":
             try:
                 dificuldade = int(nivel_diff.split(" - ")[0])
