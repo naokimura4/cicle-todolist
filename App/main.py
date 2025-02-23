@@ -29,7 +29,7 @@ class Gerenciador(ScreenManager):
 # App Principal
 class MyCicleStudyApp(App):
     def build(self):
-        Window.set_icon("App/img/logo.png")
+        Window.set_icon("App/img/ciclo.png")
         Builder.load_file('assets/Gerenciador.kv')
 
         # Criando o ScreenManager e adicionando a tela do menu
