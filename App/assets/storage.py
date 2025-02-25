@@ -4,16 +4,6 @@ import datetime
 
 FILE_PATH = "App/assets/storage/dados.json"
 
-def debug_json():
-    """Analisa o conteúdo do JSON e imprime formatado."""
-    if not os.path.exists(FILE_PATH):
-        print("Arquivo JSON não encontrado.")
-        return
-    
-    with open(FILE_PATH, "r", encoding="utf-8") as file:
-        dados = json.load(file)
-        print("Dados Salvos no JSON:", json.dumps(dados, indent=4, ensure_ascii=False))
-
 def inciar_storage():
     if not os.path.exists(FILE_PATH):
         dados_iniciais = {
@@ -29,8 +19,6 @@ def inciar_storage():
             logger.error("Erro ao inicializar storage: %s", e)
 
 def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=None):
-    """Salva a carga horária, matérias, última data e dias para reset no JSON."""
-    
     _,_,_,dia_salvo = carregar_dados()
     dias_para_reset = dias_para_reset if dias_para_reset is not None else dia_salvo
     dados = {
@@ -56,7 +44,7 @@ def salvar_dados(carga_horaria, materias, ultima_data=None, dias_para_reset=None
 
 def carregar_dados():
     if not os.path.exists(FILE_PATH):
-        return 0, [], None, 0  # 🔥 Agora retorna 4 valores corretamente
+        return 0, [], None, 0 
 
     try:
         with open(FILE_PATH, "r", encoding="utf-8") as file:

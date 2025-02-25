@@ -21,7 +21,7 @@ class Ciclo(Screen):
             print(f"Erro ao carregar dados: {e}")
             self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset = 0, [], None, 7
 
-    def on_enter(self):
+    def on_enter(self): # Carregamento de dados
         self.atualizar_data()
         if not self.materias:
             self.carga_horaria, self.materias, self.ultima_data, self.dias_para_reset = carregar_dados()
@@ -29,15 +29,13 @@ class Ciclo(Screen):
         self.calcular_checkboxes()
         self.populate_materias()
 
-    def atualizar_data(self):
+    def atualizar_data(self): # atualiza as datas 
         """Atualiza a data atual e os dias restantes para resetar as checkboxes."""
         hoje = datetime.date.today()
 
-        # Atualiza o texto com a data atual
         if 'data_atual' in self.ids:
             self.ids.data_atual.text = f"Dia: {hoje.strftime('%d/%m/%Y')}"
 
-        # Garante que ultima_data nunca seja None
         if not self.ultima_data:
             self.ultima_data = hoje.isoformat()
 
@@ -49,7 +47,7 @@ class Ciclo(Screen):
         if 'dias_para_reset' in self.ids:
             self.ids.dias_para_reset.text = f"Dias para Reset: {max(dias_restantes, 0)}"
 
-    def verificar_reset_diario(self):
+    def verificar_reset_diario(self): # faz a verificação para resetar as matérias
         hoje = datetime.date.today()
 
         if not self.ultima_data:
@@ -95,27 +93,26 @@ class Ciclo(Screen):
 
             linha_layout = GridLayout(cols=3, size_hint_y=None, height=50, spacing=10)
 
-            # Nome da matéria com quebra de linha automática
             nome_label = Label(
                 text=nome,
                 font_size=18,
                 size_hint_x=None,
-                width=200,  # Define uma largura fixa para o Label
-                text_size=(200, None),  # Permite a quebra de linha automática
+                width=200,  
+                text_size=(200, None),  
                 halign="left",
                 valign="middle"
             )
 
             linha_layout.add_widget(nome_label)
 
-            # Criando um ScrollView horizontal para os checkboxes
+            
             scroll_view = ScrollView(
                 do_scroll_x=True, do_scroll_y=False,
-                size_hint=(1, None), height=50  # Ajusta altura e mantém largura flexível
+                size_hint=(1, None), height=50  
             )
 
             checkboxes_layout = BoxLayout(orientation='horizontal', spacing=10, size_hint_x=None)
-            checkboxes_layout.width = max(quantidade * 50, 200)  # Garante largura mínima
+            checkboxes_layout.width = max(quantidade * 50, 200) 
 
             for i in range(quantidade):
                 checkbox = CheckBox(size_hint=(None, None), size=(40, 40))

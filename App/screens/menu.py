@@ -6,8 +6,6 @@ from screens.tela_horario import *
 
 class Menu(Screen):
     def resetar_dados(self):
-        """Reseta apenas as matérias e atualiza a tela do ciclo instantaneamente."""
-        # Obtém a carga horária da tela Ciclo, pois ela carrega os dados corretamente
         carga_horaria_atual = self.manager.get_screen('ciclo').carga_horaria
 
         # Reseta apenas as matérias

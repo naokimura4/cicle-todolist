@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
-from assets.storage import salvar_dados, carregar_dados  # Importamos funções para salvar e carregar dados
+from assets.storage import salvar_dados, carregar_dados 
 from kivy.clock import Clock
 
 class InputMateria(Screen):
@@ -13,7 +13,7 @@ class InputMateria(Screen):
     def on_enter(self):
         """Carrega as matérias salvas ao entrar na tela."""
         _, materias, _, dias_para_reset = carregar_dados()
-        self.manager.get_screen('ciclo').materias = materias  # Atualiza a lista de matérias
+        self.manager.get_screen('ciclo').materias = materias 
 
     def mostrar_popup(self, titulo, mensagem):
         """Exibe uma mensagem popup."""
@@ -27,14 +27,14 @@ class InputMateria(Screen):
         Clock.schedule_once(lambda dt: popup.dismiss(), 2) 
 
     def salvar_materia(self):
-        enviar_materia = self.nome_materia.text
+        nome_da_materia = self.nome_materia.text
         nivel_diff = self.spinner_diff.text
-        if enviar_materia and nivel_diff != "Selecione":
+        if nome_da_materia and nivel_diff != "Selecione":
             try:
                 dificuldade = int(nivel_diff.split(" - ")[0])
                 ciclo_screen = self.manager.get_screen('ciclo')
 
-                ciclo_screen.adicionar_materia(enviar_materia, dificuldade)
+                ciclo_screen.adicionar_materia(nome_da_materia, dificuldade)
 
                 self.mostrar_popup("Sucesso!", "Matéria adicionada com sucesso.")
                 self.nome_materia.text = ''

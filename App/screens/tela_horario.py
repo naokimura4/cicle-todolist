@@ -3,7 +3,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from screens.ciclo import *
-from assets.storage import salvar_dados, carregar_dados  # Importamos as funções de salvamento
+from assets.storage import salvar_dados, carregar_dados 
 
 class TelaHorario(Screen):
     dias_input = ObjectProperty(None)
@@ -15,13 +15,8 @@ class TelaHorario(Screen):
 
         if carga_horaria > 0:
             self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
-
         else:
-            carga_horaria = 0  # Valor padrão
-
-        if carga_horaria > 0:
-            self.resultado_label.text = f'Carga Horária Atual: {carga_horaria} horas'
-
+            carga_horaria = 0 
 
     def aviso_popup(self, titulo, mensagem):
         pop = Popup(
@@ -53,7 +48,7 @@ class TelaHorario(Screen):
 
                 ciclo_screen = self.manager.get_screen('ciclo')
                 ciclo_screen.carga_horaria = carga_horaria
-                ciclo_screen.dias_para_reset = dias  # 🔥 Atualizando dias
+                ciclo_screen.dias_para_reset = dias 
 
                 salvar_dados(carga_horaria, ciclo_screen.materias, ciclo_screen.ultima_data, dias)
 
